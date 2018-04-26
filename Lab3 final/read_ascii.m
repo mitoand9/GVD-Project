@@ -8,7 +8,7 @@ for i=1:7
     temp = fgetl(fid);                      % remove title rows
 end
 fscanf(fid,'%e',[13 inf]);                  % importing data
-file_data = ans;
+file_data = ans';
 fclose(fid);                                % close file
 
 disp('[ASCII data imported to matlab]')
