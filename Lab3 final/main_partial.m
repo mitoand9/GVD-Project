@@ -6,7 +6,7 @@ clear all
 close all
 clc
  
-global m Jz L lambda f b C12 C34 is velocity delta file_time %delta_t 
+global m Jz L lambda f b C12 C34 is velocity delta file_time g %delta_t 
 
 % Vehicle parameters
 %------------------------------------------------------
@@ -19,6 +19,7 @@ b=(1-lambda)*L;
 C12=90e3;
 C34=100e3;
 is=16.5;
+g = 9.81;
 
 % Intitial condition and time
 %-------------------------------------------------------

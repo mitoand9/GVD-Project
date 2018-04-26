@@ -1,6 +1,6 @@
 function [xdot]=bicycle_model_partial(t,x)
 
-global f b C12 C34 g lambda Jz m delta velocity delta_t file_time
+global f b C12 C34 lambda Jz m delta velocity delta_t file_time
 
 vx=velocity;
 % vx=sqrt(velocity^2-x(2)^2);
@@ -35,6 +35,6 @@ end
 xdot1=x(2); % vy-speed
 xdot2= (1/m)*(F_34+F_12); % vy-acceleration
 xdot3=x(4); % Yaw rate angular velocity
-xdot4= (1/Jz)*(f*F_12-b*F_34); % Yaw rate angular acceleration
+xdot4= (1/Jz)*(); % Yaw rate angular acceleration
 xdot=[xdot1 xdot2 xdot3 xdot4]';
 %----------------------------------------------------------------
