@@ -1,6 +1,6 @@
 function [xdot]=bicycle_model_partial(t,x)
 
-global f b C12 C34 g lambda Jz m delta velocity delta_t file_time
+global f b C12 C34 g lambda Jz m delta velocity delta_t tyre_model file_time
 
 vx=velocity;
 % vx=sqrt(velocity^2-x(2)^2);
@@ -17,19 +17,25 @@ end
 alpha_12 = ((x(2)+x(4)*f)/velocity)-delta;
 alpha_34 = ((x(2)-x(4)*b)/velocity);
 
-lamb_12 = m*g*(1-lambda)*0.8/(2*C12*abs(tan(alpha_12)));
-lamb_34 = m*g*lambda*0.8/(2*C34*abs(tan(alpha_34)));
 
-if lamb_12 <= 1
-    F_12 = (-tan(alpha_12)*m*g*(1-lambda)*0.8/(2*abs(tan(alpha_12))))*(2-m*g*(1-lambda)/(2*C12*abs(tan(alpha_12))));
-else
-    F_12 = -C12*tan(alpha_12);
-end
+if strcmp(tyre_model,'Brush') == 1
+    lamb_12 = m*g*(1-lambda)*0.8/(2*C12*abs(tan(alpha_12)));
+    lamb_34 = m*g*lambda*0.8/(2*C34*abs(tan(alpha_34)));
 
-if lamb_34 <= 1
-    F_34 = (-tan(alpha_34)*m*g*(1-lambda)*0.8/(2*abs(tan(alpha_34))))*(2-m*g*(1-lambda)/(2*C34*abs(tan(alpha_34))));
+    if lamb_12 <= 1
+        F_12 = (-tan(alpha_12)*m*g*(1-lambda)*0.8/(2*abs(tan(alpha_12))))*(2-m*g*(1-lambda)/(2*C12*abs(tan(alpha_12))));
+    else
+        F_12 = -C12*tan(alpha_12);
+    end
+
+    if lamb_34 <= 1
+        F_34 = (-tan(alpha_34)*m*g*(1-lambda)*0.8/(2*abs(tan(alpha_34))))*(2-m*g*(1-lambda)/(2*C34*abs(tan(alpha_34))));
+    else
+        F_34 = -C34*tan(alpha_34);
+    end
 else
-    F_34 = -C34*tan(alpha_34);
+    F_12 = -C12*alpha_12;
+    F_34 = -C34*alpha_34;
 end
 
 xdot1=x(2); % vy-speed
