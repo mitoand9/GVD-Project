@@ -18,7 +18,7 @@ f=lambda*L;
 b=(1-lambda)*L;
 C12=90e3;
 C34=100e3;
-is=17;
+is=16.5;
 
 % Intitial condition and time
 %-------------------------------------------------------
