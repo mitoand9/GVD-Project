@@ -9,12 +9,12 @@ vx=velocity;
 if length(delta)==1 % for single value delta
     delta_t=delta;
 else                % for vector delta
-%     i=find(file_time>=t(end));%,1,'first');
-%     delta_t=delta(i(1));
-delta=-0.898;
+    i=find(file_time>=t(end));%,1,'first');
+    delta_t=delta(i(1));
+% delta=-0.898;
 end
 
-alpha_12 = ((x(2)+x(4)*f)/velocity)-delta;
+alpha_12 = ((x(2)+x(4)*f)/velocity)-delta_t;
 alpha_34 = ((x(2)-x(4)*b)/velocity);
 
 
