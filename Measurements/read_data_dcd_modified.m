@@ -14,10 +14,10 @@ clc
 offset_error=0.1;    %OFFSET ERROR
 scaling_error=.9;    %SCALING ERROR
 
-addpath('logged_data/MeasurementsLunda2017')
+addpath('D:\KTH 4th Quarter 2018\GVD-Project\Measurements')
 
 
-load logged_data/MeasurementsLunda2017/DLC_094.ASC
+load LUNDA012.ASC
 % Read-in of file
 
 % file_str = ['logged_data/MeasurementsLunda2016/VBOX0056.ASC']            % file name--------------CHANGE HERE
@@ -30,7 +30,7 @@ load logged_data/MeasurementsLunda2017/DLC_094.ASC
 % file_data = ans;
 % fclose(fid);                                % close file
 
-file_data=DLC_094;
+file_data=LUNDA012;
 
 
 
@@ -66,7 +66,7 @@ Utstr=strvcat(Str_1,Str_2,Str_3,Str_4,Str_5,Str_6,Str_7,Str_8,Str_9,Str_10,Str_1
 
 
 % Change to appropriate file name
-diary test.dcd
+diary LUNDA012.dcd
 
 Utstr
 
