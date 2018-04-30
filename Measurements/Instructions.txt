@@ -1,0 +1,8 @@
+Run the matlab-file initial_file.m for a specific VBO-fil in order to transfer it to ascii-format and mat-format.
+
+1) Set name of VBO file on line 20
+
+2) Set name of mat-file to be produced on line 124
+
+3) Set name of ascii-file to be produced on line 127
+
