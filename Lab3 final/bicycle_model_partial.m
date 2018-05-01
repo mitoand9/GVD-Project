@@ -14,26 +14,37 @@ else                % for vector delta
 % delta=-0.898;
 end
 
-alpha_12 = ((x(2)+x(4)*f)/velocity)-delta_t;
-alpha_34 = ((x(2)-x(4)*b)/velocity);
+alpha_12 = atan((x(2)+x(4)*f)/velocity)-delta_t;
+alpha_34 = atan((x(2)-x(4)*b)/velocity);
+mubrush = 0.3;
 
+%alpha_34*180/pi
 
 if strcmp(tyre_model,'Brush') == 1
-    lamb_12 = m*g*(1-lambda)*0.8/(2*C12*abs(tan(alpha_12)));
-    lamb_34 = m*g*lambda*0.8/(2*C34*abs(tan(alpha_34)));
+    disp('brush')
+    lamb_12 = m*g*(1-lambda)*mubrush/(2*C12*abs(tan(alpha_12)));
+    lamb_34 = m*g*lambda*mubrush/(2*C34*abs(tan(alpha_34)));
+    
+    if lamb_12 <= 1 || lamb_34 <= 1
+        disp('BOOOOOOOOOOOOOOOOOOOOOOOM')
+    end
 
     if lamb_12 <= 1
-        F_12 = (-tan(alpha_12)*m*g*(1-lambda)*0.8/(2*abs(tan(alpha_12))))*(2-m*g*(1-lambda)/(2*C12*abs(tan(alpha_12))));
+        disp('bru-brush12')
+        F_12 = (-tan(alpha_12)*m*g*(1-lambda)*mubrush/(2*abs(tan(alpha_12))))*(2-m*g*(1-lambda)/(2*C12*abs(tan(alpha_12))));
     else
+        disp('bru-lin12')
         F_12 = -C12*tan(alpha_12);
     end
 
     if lamb_34 <= 1
-        F_34 = (-tan(alpha_34)*m*g*(1-lambda)*0.8/(2*abs(tan(alpha_34))))*(2-m*g*(1-lambda)/(2*C34*abs(tan(alpha_34))));
+        F_34 = (-tan(alpha_34)*m*g*(1-lambda)*mubrush/(2*abs(tan(alpha_34))))*(2-m*g*(1-lambda)/(2*C34*abs(tan(alpha_34))));
     else
+        disp('bru-brush34')
         F_34 = -C34*tan(alpha_34);
     end
 else
+    disp('linear')
     F_12 = -C12*alpha_12;
     F_34 = -C34*alpha_34;
 end
