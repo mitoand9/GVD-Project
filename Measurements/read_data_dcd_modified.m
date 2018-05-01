@@ -2,7 +2,7 @@ clear
 close all
 clc
 
-% Program for creating *.dcd-file for ADAMS
+% Program for creating *.dcf-file for ADAMS
 % Enter the filename of the measurement file that shall be loaded, insert the desired steering deviation (offset_error and scaling_error), perhaps 
 % adjust the time interval to be imported from the measurement file (hereafter referred to as file_data), save with an appropriate file name.
 % To run the file in ADAMS it has to be opened in e.g. notepad first. Once opened in notepad, take away the three top rows and save the file. 
@@ -14,7 +14,7 @@ clc
 offset_error=0.1;    %OFFSET ERROR
 scaling_error=.9;    %SCALING ERROR
 
-addpath('D:\KTH 4th Quarter 2018\GVD-Project\Measurements')
+addpath('C:\AOB\Doc seri Andrea\KTH\KTH Courses\Ground Vehicle Dynamics\GVD-Project\Measurements')
 
 
 load LUNDA012.ASC
@@ -44,7 +44,7 @@ UTdata(:,2)=scaling_error*(UTdata(:,2)-offset_error);
 
 
 apo=char(39);
-Str_1 = strvcat('[MDI_HEADER]','FILE_NAME     = sampled_steering_B90_2.dcd');  % Change to appropriate file name
+Str_1 = strvcat('[MDI_HEADER]','FILE_NAME     = LUNDA012.dcd');  % Change to appropriate file name
 Str_2=strcat('FILE_TYPE     =',apo,('dcd'),apo);
 Str_3='FILE_VERSION  = 1.0';
 Str_4=strcat('FILE_FORMAT   = ', apo, 'ASCII', apo);
