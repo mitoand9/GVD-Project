@@ -21,7 +21,7 @@ C34=100e3;
 is=16.5;
 g = 9.81;
 
-tyre_model = "Brush"; %Select between Linear or Brush;
+tyre_model = "Linear"; %Select between Linear or Brush;
 
 % Intitial condition and time
 %-------------------------------------------------------

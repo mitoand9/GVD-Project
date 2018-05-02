@@ -54,4 +54,6 @@ xdot2= (1/m)*(F34+F12); % vy-acceleration
 xdot3=x(4); % Yaw rate angular velocity
 xdot4= (1/Jz)*(f*F12-b*F34); % Yaw rate angular acceleration
 xdot=[xdot1 xdot2 xdot3 xdot4]';
+
+Fz = 
 %----------------------------------------------------------------
