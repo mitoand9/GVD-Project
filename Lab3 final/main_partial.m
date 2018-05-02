@@ -110,7 +110,7 @@ psi_p_ss=(delta*L*C12*C34*vx)./(L^2*C12*C34+m*vx^2.*(b*C34-f*C12));
 % %--------------------------------------------------------------------------
 if length(delta)~=1, figure
     subplot(3,1,1)
-    plot(timeout,vx.*psi_p,'b');
+    %plot(timeout,vx.*psi_p,'b');
     vx=sqrt(velocity^2-vy.^2);
     i_end=find(time_delta>=timeout(end-1),1,'first');
     plot(time_delta(1:i_end),delta(1:i_end)*180/pi,'r'),hold on,grid on
