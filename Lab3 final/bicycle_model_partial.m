@@ -16,7 +16,7 @@ end
 
 alpha12 = atan((x(2)+x(4)*f)/velocity)-delta_t;
 alpha34 = atan((x(2)-x(4)*b)/velocity);
-mubrush = 0.9;
+mubrush = 0.1;
 
 %alpha34*180/pi
 
@@ -44,6 +44,7 @@ mubrush = 0.9;
 %         F34 = -C34*tan(alpha34);
 %     end
 
+deltaF = m*x(3)*b*cgh/(tw*L);
 
 if strcmp(tyre_model,'Brush') == 1
     %disp('brush')
@@ -100,8 +101,6 @@ end
 xdot1=x(2); % vy-speed
 xdot2= (1/m)*(F1+F2+F3+F4); % vy-acceleration
 xdot3=x(4); % Yaw rate angular velocity
-xdot4= (1/Jz)*(f*F12-b*F34); % Yaw rate angular acceleration
+xdot4= (1/Jz)*(f*(F1+F2)-b*(F3+F4)); % Yaw rate angular acceleration
 xdot=[xdot1 xdot2 xdot3 xdot4]';
-
-deltaF = m*xdot2*b*cgh/(tw*L);
 %----------------------------------------------------------------
