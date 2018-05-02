@@ -6,7 +6,7 @@ clear all
 close all
 clc
  
-global m Jz L lambda f b C12 C34 is velocity delta file_time g tyre_model %delta_t 
+global m Jz L lambda f b C12 C34 is velocity delta file_time g tyre_model cgh tw %delta_t 
 
 % Vehicle parameters
 %------------------------------------------------------
@@ -20,6 +20,8 @@ C12=90e3;
 C34=100e3;
 is=16.5;
 g = 9.81;
+cgh = 1; %cg height
+tw = 1.8; %track width
 
 tyre_model = "Linear"; %Select between Linear or Brush;
 
