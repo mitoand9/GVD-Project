@@ -16,7 +16,7 @@ end
 
 alpha12 = atan((x(2)+x(4)*f)/velocity)-delta_t;
 alpha34 = atan((x(2)-x(4)*b)/velocity);
-mubrush = 0.1;
+mubrush = 0.5;
 
 %alpha34*180/pi
 
@@ -44,52 +44,47 @@ mubrush = 0.1;
 %         F34 = -C34*tan(alpha34);
 %     end
 
-deltaF = m*x(3)*b*cgh/(tw*L);
+deltaFf = m*x(3)*b*cgh/(tw*L);
+deltaFr = m*x(3)*f*cgh/(tw*L);
 
 if strcmp(tyre_model,'Brush') == 1
     %disp('brush')
-    lamb1 = (m*g*(1-lambda)/2+deltaF)*mubrush/(2*(C12/2)*abs(tan(alpha12)));
-    lamb2 = (m*g*(1-lambda)/2-deltaF)*mubrush/(2*(C12/2)*abs(tan(alpha12)));
-    lamb3 = (m*g*lambda/2+deltaF)*mubrush/(2*(C34/2)*abs(tan(alpha34)));
-    lamb4 = (m*g*lambda/2-deltaF)*mubrush/(2*(C34/2)*abs(tan(alpha34)));
+    lamb1 = (m*g*(1-lambda)/2+deltaFf)*mubrush/(C12*abs(tan(alpha12)));
+    lamb2 = (m*g*(1-lambda)/2-deltaFf)*mubrush/(C12*abs(tan(alpha12)));
+    lamb3 = (m*g*lambda/2+deltaFr)*mubrush/(C34*abs(tan(alpha34)));
+    lamb4 = (m*g*lambda/2-deltaFr)*mubrush/(C34*abs(tan(alpha34)));
     
 %     if lamb12 <= 1 || lamb34 <= 1
 %         disp('BOOOOOOOOOOOOOOOOOOOOOOOM')
 %     end
 
     if lamb1 <= 1
-        %disp('bru-brush12')
         F1 = (-C12/2)*tan(alpha12)*lamb1*(2-lamb1);
     else
-        %disp('bru-lin12')
         F1 = -(C12/2)*tan(alpha12);
     end
     if lamb2 <= 1
-        %disp('bru-brush12')
         F2 = (-C12/2)*tan(alpha12)*lamb2*(2-lamb2);
     else
-        %disp('bru-lin12')
         F2 = -(C12/2)*tan(alpha12);
     end
     if lamb3 <= 1
-        F3 = (-C34/2)*tan(alpha12)*lamb3*(2-lamb3);
+        F3 = (-C34/2)*tan(alpha34)*lamb3*(2-lamb3);
     else
-        %disp('bru-brush34')
         F3 = -(C34/2)*tan(alpha34);
     end
-        if lamb4 <= 1
-        F4 = (-C34/2)*tan(alpha12)*lamb4*(2-lamb4);
+    if lamb4 <= 1
+        F4 = (-C34/2)*tan(alpha34)*lamb4*(2-lamb4);
     else
-        %disp('bru-brush34')
         F4 = -(C34/2)*tan(alpha34);
     end
 
 else
     %disp('linear')
-    F1 = -C12*alpha12/2;
-    F2 = -C12*alpha12/2;
-    F3 = -C34*alpha34/2;
-    F4 = -C34*alpha34/2;
+    F1 = -(C12/2)*alpha12;
+    F2 = -(C12/2)*alpha12;
+    F3 = -(C34/2)*alpha34;
+    F4 = -(C34/2)*alpha34;
 end
 
 % xdot1=x(2); % vy-speed
