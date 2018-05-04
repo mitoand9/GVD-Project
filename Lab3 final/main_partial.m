@@ -23,12 +23,12 @@ g = 9.81;
 cgh = 1.5; %cg height
 tw = 1.46; %track width
 
-tyre_model = "Brush"; %Select between Linear or Brush;
+tyre_model = "Linear"; %Select between Linear or Brush;
 
 % Intitial condition and time
 %-------------------------------------------------------
 velocity=10;          % speed [m/s]
-tstop=10 ;           % stop-time
+tstop=23.57 ;           % stop-time
 dt=0.02;            % timestep
 time=0:dt:tstop;    % time vector (fixed time step)
 
@@ -42,9 +42,16 @@ time=0:dt:tstop;    % time vector (fixed time step)
 % time_delta=time;
 
 % -- from file (STEP 2) --
-file_data=read_ascii('DLC_50_english.ASC');
+% file_data=read_ascii('DLC_50_english.ASC');
+% file_time=file_data(:,1);
+% file_delta_sw=file_data(:,8);
+% file_delta=file_delta_sw/is;
+% delta=file_delta;
+% time_delta=file_time;
+
+file_data = dlmread('LUNDA121.asc');
 file_time=file_data(:,1);
-file_delta_sw=file_data(:,8);
+file_delta_sw=file_data(:,2);
 file_delta=file_delta_sw/is;
 delta=file_delta;
 time_delta=file_time;
