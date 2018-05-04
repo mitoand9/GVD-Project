@@ -23,12 +23,12 @@ g = 9.81;
 cgh = 1.5; %cg height
 tw = 1.46; %track width
 
-tyre_model = "Linear"; %Select between Linear or Brush;
+tyre_model = "Brush"; %Select between Linear or Brush;
 
 % Intitial condition and time
 %-------------------------------------------------------
 velocity=10;          % speed [m/s]
-tstop=23.57 ;           % stop-time
+tstop=10 ;           % stop-time
 dt=0.02;            % timestep
 time=0:dt:tstop;    % time vector (fixed time step)
 
@@ -42,19 +42,31 @@ time=0:dt:tstop;    % time vector (fixed time step)
 % time_delta=time;
 
 % -- from file (STEP 2) --
-% file_data=read_ascii('DLC_50_english.ASC');
+% file_data=read_ascii('DLC_50_english.ASC'); %change name also in the read_ascii.mat!
 % file_time=file_data(:,1);
 % file_delta_sw=file_data(:,8);
 % file_delta=file_delta_sw/is;
 % delta=file_delta;
 % time_delta=file_time;
 
-file_data = dlmread('LUNDA121.asc');
+file_data=read_ascii('Testdata2011_Ramp.ASC');
 file_time=file_data(:,1);
-file_delta_sw=file_data(:,2);
+file_delta_sw=file_data(:,8);
 file_delta=file_delta_sw/is;
 delta=file_delta;
 time_delta=file_time;
+file_ay = file_data(:,7);
+file_SA34 = file_data(:,10);
+SC1 = 0.002; %steering calibrations
+SC2 = 1.2;
+
+
+% file_data = dlmread('LUNDA121.asc');
+% file_time=file_data(:,1);
+% file_delta_sw=file_data(:,2);
+% file_delta=file_delta_sw/is;
+% delta=file_delta;
+% time_delta=file_time;
 
 % Solve equations of motion
 %------------------------------------------------------
@@ -118,26 +130,33 @@ psi_p_ss=(delta*L*C12*C34*vx)./(L^2*C12*C34+m*vx^2.*(b*C34-f*C12));
 % % STEP 2 presentation: Plot simulation from sampled data
 % %--------------------------------------------------------------------------
 if length(delta)~=1, figure
-    subplot(3,1,1)
+    subplot(4,1,1)
     %plot(timeout,vx.*psi_p,'b');
     vx=sqrt(velocity^2-vy.^2);
     i_end=find(time_delta>=timeout(end-1),1,'first');
     plot(time_delta(1:i_end),delta(1:i_end)*180/pi,'r'),hold on,grid on
-    plot(timeout(1:end-1),vy_p+vx(1:end-1).*psi_p(1:end-1),'b'),grid on
+    plot(timeout(1:end-1),vy_p+vx(1:end-1).*psi_p(1:end-1),'b'),hold on,grid on
+    plot(time_delta(1:i_end),file_ay(1:i_end)),grid on; %only use for ramp steer
     title('Simulation from sampled steering wheel angle')
     ylabel('ay [m/s^2] , \delta [deg]');
     xlabel('time [s]')
     legend('\delta','a_y')
 
-    subplot(3,1,2)
+    subplot(4,1,2)
     plot(timeout,vy,'b'),grid on
     ylabel('v_y [m/s]');
     xlabel('time [s]')
 
-    subplot(3,1,3)
+    subplot(4,1,3)
     plot(timeout,psi_p*180/pi,'b'),grid on
     ylabel('\Psi\prime [deg/s]');
     xlabel('time [s]')
+    
+    subplot(4,1,4)
+    plot(file_SA34(1:i_end),file_ay(1:i_end)*m*f/L,'o'),hold on, grid on
+    %plot(atan((vy(1:end-1)-psi_p(1:end-1)*b)./vx(1:end-1)),(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o'),grid on;
+    ylabel('F34 [N]');
+    xlabel('SA [rad]')
 end
 
 % STEP 3 presentation: Plot vehicle position using open loop steering
