@@ -162,12 +162,20 @@ if length(delta)~=1, figure
     vx=sqrt(velocity^2-vy.^2);
     i_end=find(time_delta>=timeout(end-1),1,'first');
     
-    %plot(file_SA34(1:i_end)*180/pi,file_ay(1:i_end)*m*f/L,'o'),hold on, grid on
-    plot(atan((vy(1:end-1)-psi_p(1:end-1)*b)./vx(1:end-1)),(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o'),grid on;
-    %plot(-(((vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L)/C34)*180/pi,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o','Linewidth',3),grid on;
+    plot(file_SA34(1:i_end)*180/pi,file_ay(1:i_end)*m*f/L,'o'),hold on, grid on
+    %plot(atan((vy(1:end-1)-psi_p(1:end-1)*b)./vx(1:end-1)),(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o'),grid on;
+    plot(-(((vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L)/C34)*180/pi,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o','Linewidth',3),grid on;
     ylabel('F34 [N]');
     xlabel('SA [deg]')
     legend('Measurement','Model')
+    hold on
+    
+    %plot( ... ,file_ay(1:i_end)*m*b/L,'o'),hold on, grid on
+    plot(-(((vy_p+vx(1:end-1).*psi_p(1:end-1))*m*b/L)/C12)*180/pi,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*b/L,'o','Linewidth',3),grid on;
+    ylabel('F12 [N]');
+    xlabel('SA [deg]')
+    legend('Measurement','Model')
+    
     
     %doubts:
     % - what is the SA shift due to (wheel alignments)?
