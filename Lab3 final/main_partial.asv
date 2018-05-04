@@ -128,7 +128,7 @@ psi_p_ss=(delta*L*C12*C34*vx)./(L^2*C12*C34+m*vx^2.*(b*C34-f*C12));
 % % STEP 2 presentation: Plot simulation from sampled data
 % %--------------------------------------------------------------------------
 if length(delta)~=1, figure
-    subplot(3,1,1)
+    subplot(4,1,1)
     %plot(timeout,vx.*psi_p,'b');
     vx=sqrt(velocity^2-vy.^2);
     i_end=find(time_delta>=timeout(end-1),1,'first');
@@ -140,36 +140,24 @@ if length(delta)~=1, figure
     xlabel('time [s]')
     legend('\delta','a_y')
 
-    subplot(3,1,2)
+    subplot(4,1,2)
     plot(timeout,vy,'b'),grid on
     ylabel('v_y [m/s]');
     xlabel('time [s]')
 
-    subplot(3,1,3)
+    subplot(4,1,3)
     plot(timeout,psi_p*180/pi,'b'),grid on
     ylabel('\Psi\prime [deg/s]');
     xlabel('time [s]')
     
-%     subplot(4,1,4)
-%     plot(file_SA34(1:i_end),file_ay(1:i_end)*m*f/L,'o'),hold on, grid on
-%     %plot(atan((vy(1:end-1)-psi_p(1:end-1)*b)./vx(1:end-1)),(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o'),grid on;
-%     plot(-((vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L)/C34,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o','Linewidth',3),grid on;
-%     ylabel('F34 [N]');
-%     xlabel('SA [rad]')
+    subplot(4,1,4)
+    plot(file_SA34(1:i_end),file_ay(1:i_end)*m*f/L,'o'),hold on, grid on
+    %plot(atan((vy(1:end-1)-psi_p(1:end-1)*b)./vx(1:end-1)),(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o'),grid on;
+    plot(-((vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L)/C34+0.02,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o','Linewidth',6),grid on;
+    ylabel('F34 [N]');
+    xlabel('SA [rad]')
 end
 
-if length(delta)~=1, figure
-    vx=sqrt(velocity^2-vy.^2);
-    i_end=find(time_delta>=timeout(end-1),1,'first');
-    
-    plot(file_SA34(1:i_end)*180/pi,file_ay(1:i_end)*m*f/L,'o'),hold on, grid on
-    %plot(atan((vy(1:end-1)-psi_p(1:end-1)*b)./vx(1:end-1)),(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o'),grid on;
-    plot(-(((vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L)/C34)*180/pi+1.1,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o','Linewidth',3),grid on;
-    ylabel('F34 [N]');
-    xlabel('SA [deg]')
-    legend('Measurement','Model')
-    
-end
 % STEP 3 presentation: Plot vehicle position using open loop steering
 %--------------------------------------------------------------------------
 % if length(delta)==1,figure

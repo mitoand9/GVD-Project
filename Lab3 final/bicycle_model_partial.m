@@ -36,14 +36,14 @@ if strcmp(tyre_model,'Brush') == 1
 
     if lamb12 <= 1
         %disp('bru-brush12')
-        F12 = (-tan(alpha12)*m*g*(1-lambda)*mubrush/(2*abs(tan(alpha12))))*(2-m*g*(1-lambda)/(2*C12*abs(tan(alpha12))));
+        F12 = -C12*tan(alpha12)*lamb12*(2-lamb12); %(-tan(alpha12)*m*g*(1-lambda)*mubrush/(2*abs(tan(alpha12))))*(2-m*g*(1-lambda)/(2*C12*abs(tan(alpha12))));
     else
         %disp('bru-lin12')
         F12 = -C12*tan(alpha12);
     end
 
     if lamb34 <= 1
-        F34 = (-tan(alpha34)*m*g*lambda*mubrush/(2*abs(tan(alpha34))))*(2-m*g*lambda/(2*C34*abs(tan(alpha34))));
+        F34 = -C34*tan(alpha34)*lamb34*(2-lamb34); %(-tan(alpha34)*m*g*lambda*mubrush/(2*abs(tan(alpha34))))*(2-m*g*lambda/(2*C34*abs(tan(alpha34))));
     else
         %disp('bru-brush34')
         F34 = -C34*tan(alpha34);
