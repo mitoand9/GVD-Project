@@ -48,6 +48,10 @@ if strcmp(tyre_model,'Brush') == 1
         %disp('bru-brush34')
         F34 = -C34*tan(alpha34);
     end
+    
+else
+    F12 = -C12*alpha12;
+    F34 = -C34*alpha34;
 end
 
 % brush model - load transfer
