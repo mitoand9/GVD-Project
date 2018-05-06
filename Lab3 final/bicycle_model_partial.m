@@ -19,7 +19,7 @@ SC2 = 1;
 
 alpha12 = atan((x(2)+x(4)*f)/velocity)-(delta_t+SC1)*SC2;
 alpha34 = atan((x(2)-x(4)*b)/velocity);
-mubrush = 0.9;
+mubrush = 1.5;
 
 %alpha34*180/pi
 
