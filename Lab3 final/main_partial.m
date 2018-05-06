@@ -6,7 +6,7 @@ clear all
 close all
 clc
  
-global m Jz L lambda f b C12 C34 is velocity delta file_time g tyre_model cgh tw %delta_t 
+global m Jz L lambda f b C12 C34 is velocity delta file_time g tyre_model cgh F1 F2 F3 F4 tw %delta_t 
 
 % Vehicle parameters
 %------------------------------------------------------
@@ -22,6 +22,11 @@ is=16.5;
 g = 9.81;
 cgh = 1.5; %cg height
 tw = 1.46; %track width
+
+F1 = m*g*0.59/2;
+F2 = m*g*0.59/2;
+F3 = m*g*0.41/2;
+F4 = m*g*0.41/2;
 
 tyre_model = "Brush"; %Select between Linear or Brush;
 
@@ -137,19 +142,19 @@ if length(delta)~=1, figure
     i_end=find(time_delta>=timeout(end-1),1,'first');
     plot(time_delta(1:i_end),delta(1:i_end)*180/pi,'r'),hold on,grid on
     plot(timeout(1:end-1),vy_p+vx(1:end-1).*psi_p(1:end-1),'b'),hold on,grid on
-%     plot(time_delta(1:i_end),file_ay(1:i_end)),grid on; %only use for ramp steer
+%   plot(time_delta(1:i_end),file_ay(1:i_end)),grid on; %only use for ramp steer
     title('Simulation from sampled steering wheel angle')
     ylabel('ay [m/s^2] , \delta [deg]');
     xlabel('time [s]')
     legend('\delta','a_y')
 
     subplot(3,1,2)
-    plot(timeout,vy,'b'),grid on
+    plot(timeout,vy,timeout,vy_ss,'b'),grid on
     ylabel('v_y [m/s]');
     xlabel('time [s]')
 
     subplot(3,1,3)
-    plot(timeout,psi_p*180/pi,'b'),grid on
+    plot(timeout,psi_p*180/pi,timeout,psi_p_ss*180/pi,'b'),grid on
     ylabel('\Psi\prime [deg/s]');
     xlabel('time [s]')
     
@@ -163,17 +168,17 @@ end
 
 %% F vs SA plots - only use with ramp steer
 
-if length(delta)~=1, figure
-    vx=sqrt(velocity^2-vy.^2);
-    i_end=find(time_delta>=timeout(end-1),1,'first');
-    
-    plot(file_SA34(1:i_end)*180/pi,file_ay(1:i_end)*m*f/L,'o'),hold on, grid on %measured later force
-    %plot(atan((vy(1:end-1)-psi_p(1:end-1)*b)./vx(1:end-1)),(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o'),grid on; %bicycle model lateral force with non-working slip angles
-    plot(-(((vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L)/C34)*180/pi+1.1,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o','Linewidth',3),grid on; %C34 slip angles
-    ylabel('F34 [N]');
-    xlabel('SA [deg]')
-    legend('Measurement','Model')
-    hold on
+% if length(delta)~=1, figure
+%     vx=sqrt(velocity^2-vy.^2);
+%     i_end=find(time_delta>=timeout(end-1),1,'first');
+%     
+%     plot(file_SA34(1:i_end)*180/pi,file_ay(1:i_end)*m*f/L,'o'),hold on, grid on %measured later force
+%     %plot(atan((vy(1:end-1)-psi_p(1:end-1)*b)./vx(1:end-1)),(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o'),grid on; %bicycle model lateral force with non-working slip angles
+%     plot(-(((vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L)/C34)*180/pi+1.1,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o','Linewidth',3),grid on; %C34 slip angles
+%     ylabel('F34 [N]');
+%     xlabel('SA [deg]')
+%     legend('Measurement','Model')
+%     hold on
     
 %     %plot( ... ,file_ay(1:i_end)*m*b/L,'o'),hold on, grid on
 %     plot(-(((vy_p+vx(1:end-1).*psi_p(1:end-1))*m*b/L)/C12)*180/pi,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*b/L,'o','Linewidth',3),grid on;
@@ -186,7 +191,7 @@ if length(delta)~=1, figure
     % - what is the SA shift due to (wheel alignments)?
     % - why is alpha34 calculated excessively small?
     
-end
+% end
 
 %% don't use this
 

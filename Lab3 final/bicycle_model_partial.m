@@ -1,6 +1,6 @@
 function [xdot]=bicycle_model_partial(t,x)
 
-global L f b C12 C34 g lambda Jz m delta velocity delta_t tyre_model file_time cgh tw
+global L f b C12 C34 g lambda Jz m delta velocity delta_t tyre_model file_time cgh tw F1 F2 F3 F4
 
 vx=velocity;
 % vx=sqrt(velocity^2-x(2)^2);
@@ -15,11 +15,11 @@ else                % for vector delta
 end
 
 SC1 = 0; %steering calibrations
-SC2 = 0.87;
+SC2 = 1;
 
 alpha12 = atan((x(2)+x(4)*f)/velocity)-(delta_t+SC1)*SC2;
 alpha34 = atan((x(2)-x(4)*b)/velocity);
-mubrushbrush = 0.9;
+mubrush = 0.9;
 
 %alpha34*180/pi
 
@@ -56,19 +56,19 @@ mubrushbrush = 0.9;
 
 %% brush model - load transfer
 
-deltaFf = m*(((F1 + F2)*cos(deltatrial)+(F3 + F4))/m)*b*cgh/(tw*L);
-deltaFr = m*(((F1 + F2)*cos(deltatrial)+(F3 + F4))/m)*f*cgh/(tw*L);
+deltaFf = m*(((F1 + F2)*cos((delta_t+SC1)*SC2)+(F3 + F4))/m)*b*cgh/(tw*L);
+deltaFr = m*(((F1 + F2)*cos((delta_t+SC1)*SC2)+(F3 + F4))/m)*f*cgh/(tw*L);
 
 Fz1 = m*g*(1-0.41)/2+deltaFf;
 Fz2 = m*g*(1-0.41)/2-deltaFf;
-Fz3 = m*g*0.41/2+deltaFf;
-Fz4 = m*g*0.41/2-deltaFf;
+Fz3 = m*g*0.41/2+deltaFr;
+Fz4 = m*g*0.41/2-deltaFr;
 
 if strcmp(tyre_model,'Brush') == 1
-    lamb1 = Fz1*mubrushbrush/(C12*abs(tan(alpha12))); %doesn't matter which cg has +/- deltaF, since in tcghe final formubrushla the forces on the same axle will be added
-    lamb2 = Fz2*mubrush/(C12*abs(tan(alpha12)));
-    lamb3 = Fz3*mubrush/(C34*abs(tan(alpha34)));
-    lamb4 = Fz4*mubrush/(C34*abs(tan(alpha34)));
+    lamb1 = Fz1*mubrush/(2*C12*abs(tan(alpha12 + eps))); %doesn't matter which cg has +/- deltaF, since in tcghe final formubrushla the forces on the same axle will be added
+    lamb2 = Fz2*mubrush/(2*C12*abs(tan(alpha12 + eps)));
+    lamb3 = Fz3*mubrush/(2*C34*abs(tan(alpha34 + eps)));
+    lamb4 = Fz4*mubrush/(2*C34*abs(tan(alpha34 + eps)));
 
     if lamb1 <= 1
         F1 = (-C12/2)*tan(alpha12)*lamb1*(2-lamb1);

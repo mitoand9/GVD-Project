@@ -3,7 +3,7 @@
 
 function file_data=read_ascii(file_name)
 
-fid = fopen('Testdata2011_Ramp.ASC');                      % open file
+fid = fopen('DLC_50_english.ASC');                      % open file
 for i=1:7
     temp = fgetl(fid);                      % remove title rows
 end
