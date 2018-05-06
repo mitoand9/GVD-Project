@@ -100,9 +100,9 @@ end
 % end
 
 xdot1=x(2); % vy-speed
-xdot2= (1/m)*(F34+F12*cos(delta_t))-x(4)*velocity; % vy-acceleration
+xdot2= (1/m)*(F34+F12*cos((delta_t+SC1)*SC2))-x(4)*velocity; % vy-acceleration
 xdot3=x(4); % Yaw rate angular velocity
-xdot4= (1/Jz)*(f*F12*cos(delta_t)-b*F34); % Yaw rate angular acceleration
+xdot4= (1/Jz)*(f*F12*cos((delta_t+SC1)*SC2)-b*F34); % Yaw rate angular acceleration
 xdot=[xdot1 xdot2 xdot3 xdot4]';
 % xdot1=x(2); % vy-speed
 % xdot2= (1/m)*(F1+F2+F3+F4); % vy-acceleration
