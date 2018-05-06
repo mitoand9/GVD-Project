@@ -43,21 +43,21 @@ time=0:dt:tstop;    % time vector (fixed time step)
 
 %-- from file (STEP 2) --
 
-% file_data=read_ascii('DLC_50_english.ASC'); %change name also in the read_ascii.mat!
-% file_time=file_data(:,1);
-% file_delta_sw=file_data(:,8);
-% file_delta=file_delta_sw/is;
-% delta=file_delta;
-% time_delta=file_time;
-
-file_data=read_ascii('Testdata2011_Ramp.ASC');
+file_data=read_ascii('DLC_50_english.ASC'); %change name also in the read_ascii.mat!
 file_time=file_data(:,1);
 file_delta_sw=file_data(:,8);
 file_delta=file_delta_sw/is;
 delta=file_delta;
 time_delta=file_time;
-file_ay = file_data(:,7);
-file_SA34 = file_data(:,10);
+
+% file_data=read_ascii('Testdata2011_Ramp.ASC');
+% file_time=file_data(:,1);
+% file_delta_sw=file_data(:,8);
+% file_delta=file_delta_sw/is;
+% delta=file_delta;
+% time_delta=file_time;
+% file_ay = file_data(:,7);
+% file_SA34 = file_data(:,10);
 
 
 % file_data = dlmread('LUNDA121.asc');
@@ -137,7 +137,7 @@ if length(delta)~=1, figure
     i_end=find(time_delta>=timeout(end-1),1,'first');
     plot(time_delta(1:i_end),delta(1:i_end)*180/pi,'r'),hold on,grid on
     plot(timeout(1:end-1),vy_p+vx(1:end-1).*psi_p(1:end-1),'b'),hold on,grid on
-    plot(time_delta(1:i_end),file_ay(1:i_end)),grid on; %only use for ramp steer
+%     plot(time_delta(1:i_end),file_ay(1:i_end)),grid on; %only use for ramp steer
     title('Simulation from sampled steering wheel angle')
     ylabel('ay [m/s^2] , \delta [deg]');
     xlabel('time [s]')
