@@ -27,7 +27,7 @@ tyre_model = "Brush"; %Select between Linear or Brush;
 
 % Intitial condition and time
 %-------------------------------------------------------
-velocity=10;          % speed [m/s]
+velocity=13;          % speed [m/s]
 tstop=10 ;           % stop-time
 dt=0.02;            % timestep
 time=0:dt:tstop;    % time vector (fixed time step)
@@ -41,7 +41,8 @@ time=0:dt:tstop;    % time vector (fixed time step)
 % delta=delta_ss; % use one steering angle only
 % time_delta=time;
 
-% -- from file (STEP 2) --
+%-- from file (STEP 2) --
+
 % file_data=read_ascii('DLC_50_english.ASC'); %change name also in the read_ascii.mat!
 % file_time=file_data(:,1);
 % file_delta_sw=file_data(:,8);
@@ -72,7 +73,7 @@ x0=[0 0 0 0];       % initial condition
 size(delta)
 % Change "time" to "tstop" for variable time step.
 %[timeout, xout]=ode45('bicycle_model_partial',time,x0);
-[timeout, xout]=ode45('bicycle_model_partial',tstop,x0);
+[timeout, xout]=ode45('bicycle_model_partial',time_delta,x0);
 
 % Identify variables from simulation results
 %------------------------------------------------------
@@ -125,8 +126,10 @@ psi_p_ss=(delta*L*C12*C34*vx)./(L^2*C12*C34+m*vx^2.*(b*C34-f*C12));
 %     legend('simulation','calculation')
 % end
 
-% % STEP 2 presentation: Plot simulation from sampled data
-% %--------------------------------------------------------------------------
+%% to be used for ay etc. plots
+
+% STEP 2 presentation: Plot simulation from sampled data
+%--------------------------------------------------------------------------
 if length(delta)~=1, figure
     subplot(3,1,1)
     %plot(timeout,vx.*psi_p,'b');
@@ -158,23 +161,25 @@ if length(delta)~=1, figure
 %     xlabel('SA [rad]')
 end
 
+%% F vs SA plots - only use with ramp steer
+
 if length(delta)~=1, figure
     vx=sqrt(velocity^2-vy.^2);
     i_end=find(time_delta>=timeout(end-1),1,'first');
     
-    plot(file_SA34(1:i_end)*180/pi,file_ay(1:i_end)*m*f/L,'o'),hold on, grid on
-    %plot(atan((vy(1:end-1)-psi_p(1:end-1)*b)./vx(1:end-1)),(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o'),grid on;
-    plot(-(((vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L)/C34)*180/pi,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o','Linewidth',3),grid on;
+    plot(file_SA34(1:i_end)*180/pi,file_ay(1:i_end)*m*f/L,'o'),hold on, grid on %measured later force
+    %plot(atan((vy(1:end-1)-psi_p(1:end-1)*b)./vx(1:end-1)),(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o'),grid on; %bicycle model lateral force with non-working slip angles
+    plot(-(((vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L)/C34)*180/pi+1.1,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o','Linewidth',3),grid on; %C34 slip angles
     ylabel('F34 [N]');
     xlabel('SA [deg]')
     legend('Measurement','Model')
     hold on
     
-    %plot( ... ,file_ay(1:i_end)*m*b/L,'o'),hold on, grid on
-    plot(-(((vy_p+vx(1:end-1).*psi_p(1:end-1))*m*b/L)/C12)*180/pi,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*b/L,'o','Linewidth',3),grid on;
-    ylabel('F12 [N]');
-    xlabel('SA [deg]')
-    legend('Measurement','Model')
+%     %plot( ... ,file_ay(1:i_end)*m*b/L,'o'),hold on, grid on
+%     plot(-(((vy_p+vx(1:end-1).*psi_p(1:end-1))*m*b/L)/C12)*180/pi,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*b/L,'o','Linewidth',3),grid on;
+%     ylabel('F12 [N]');
+%     xlabel('SA [deg]')
+%     legend('Measurement','Model')
     
     
     %doubts:
@@ -182,6 +187,8 @@ if length(delta)~=1, figure
     % - why is alpha34 calculated excessively small?
     
 end
+
+%% don't use this
 
 % STEP 3 presentation: Plot vehicle position using open loop steering
 %--------------------------------------------------------------------------

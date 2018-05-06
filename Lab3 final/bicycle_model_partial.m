@@ -14,8 +14,8 @@ else                % for vector delta
 % delta=-0.898;
 end
 
-SC1 = 0.002; %steering calibrations
-SC2 = 1.2;
+SC1 = 0; %steering calibrations
+SC2 = 0.87;
 
 alpha12 = atan((x(2)+x(4)*f)/velocity)-(delta_t+SC1)*SC2;
 alpha34 = atan((x(2)-x(4)*b)/velocity);
@@ -100,9 +100,9 @@ end
 % end
 
 xdot1=x(2); % vy-speed
-xdot2= (1/m)*(F34+F12); % vy-acceleration
+xdot2= (1/m)*(F34+F12*cos(delta_t))-x(4)*velocity; % vy-acceleration
 xdot3=x(4); % Yaw rate angular velocity
-xdot4= (1/Jz)*(f*F12-b*F34); % Yaw rate angular acceleration
+xdot4= (1/Jz)*(f*F12*cos(delta_t)-b*F34); % Yaw rate angular acceleration
 xdot=[xdot1 xdot2 xdot3 xdot4]';
 % xdot1=x(2); % vy-speed
 % xdot2= (1/m)*(F1+F2+F3+F4); % vy-acceleration
