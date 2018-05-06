@@ -48,21 +48,21 @@ time=0:dt:tstop;    % time vector (fixed time step)
 
 %-- from file (STEP 2) --
 
-file_data=read_ascii('DLC_50_english.ASC'); %change name also in the read_ascii.mat!
-file_time=file_data(:,1);
-file_delta_sw=file_data(:,8);
-file_delta=file_delta_sw/is;
-delta=file_delta;
-time_delta=file_time;
-
-% file_data=read_ascii('Testdata2011_Ramp.ASC');
+% file_data=read_ascii('DLC_50_english.ASC'); %change name also in the read_ascii.mat!
 % file_time=file_data(:,1);
 % file_delta_sw=file_data(:,8);
 % file_delta=file_delta_sw/is;
 % delta=file_delta;
 % time_delta=file_time;
-% file_ay = file_data(:,7);
-% file_SA34 = file_data(:,10);
+
+file_data=read_ascii('Testdata2011_Ramp.ASC');
+file_time=file_data(:,1);
+file_delta_sw=file_data(:,8);
+file_delta=file_delta_sw/is;
+delta=file_delta;
+time_delta=file_time;
+file_ay = file_data(:,7);
+file_SA34 = file_data(:,10);
 
 
 % file_data = dlmread('LUNDA121.asc');
