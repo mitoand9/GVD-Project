@@ -89,8 +89,14 @@ if strcmp(tyre_model,'Brush') == 1
         F4 = (-C34/2)*tan(alpha34)*lamb4*(2-lamb4);
     else
         F4 = -(C34/2)*tan(alpha34);
-    end    
+    end
+else
+    F1 = -(C12/2)*alpha12;
+    F2 = -(C12/2)*alpha12;
+    F3 = -(C34/2)*alpha34;
+    F4 = -(C34/2)*alpha34;
 end
+
 
 
 % xdot1=x(2); % vy-speed
