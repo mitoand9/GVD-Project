@@ -6,6 +6,10 @@ clear all
 close all
 clc
  
+load ay_VBOX_121
+load vy_VBOX_121
+load yawRate_VBOX_121
+
 global m Jz L lambda f b C12 C34 is velocity delta file_time g tyre_model cgh F1 F2 F3 F4 tw %delta_t 
 
 % Vehicle parameters
@@ -23,10 +27,10 @@ g = 9.81;
 cgh = 1.5; %cg height
 tw = 1.46; %track width
 
-F1 = m*g*0.59/2;
-F2 = m*g*0.59/2;
-F3 = m*g*0.41/2;
-F4 = m*g*0.41/2;
+F1 = 1;
+F2 = 1;
+F3 = 1;
+F4 = 1;
 
 tyre_model = "Brush"; %Select between Linear or Brush;
 
@@ -63,7 +67,6 @@ time=0:dt:tstop;    % time vector (fixed time step)
 % time_delta=file_time;
 % file_ay = file_data(:,7);
 % file_SA34 = file_data(:,10);
-
 
 file_data = dlmread('LUNDA121.asc');
 file_time=file_data(:,1);
@@ -140,21 +143,26 @@ if length(delta)~=1, figure
     %plot(timeout,vx.*psi_p,'b');
     vx=sqrt(velocity^2-vy.^2);
     i_end=find(time_delta>=timeout(end-1),1,'first');
-    plot(time_delta(1:i_end),delta(1:i_end)*180/pi,'r'),hold on,grid on
+    plot(timeout,ay_VBOX,'r'),hold on,grid on %only use for 121
+    %plot(time_delta(1:i_end),delta(1:i_end)*180/pi,'g'),hold on,grid on 
+    %plot(timeout,file_data(:,7),'r'),hold on,grid on % only use for DLC
     plot(timeout(1:end-1),vy_p+vx(1:end-1).*psi_p(1:end-1),'b'),hold on,grid on
-%   plot(time_delta(1:i_end),file_ay(1:i_end)),grid on; %only use for ramp steer
+    %plot(time_delta(1:i_end),file_ay(1:i_end)),grid on; %only use for ramp steer
     title('Simulation from sampled steering wheel angle')
-    ylabel('ay [m/s^2] , \delta [deg]');
+    ylabel('ay [m/s^2]');
     xlabel('time [s]')
-    legend('\delta','a_y')
+    %legend('ay_VBOX','a_y model') %change accordingly if you want
 
     subplot(3,1,2)
-    plot(timeout,vy,timeout,vy_ss,'b'),grid on
+    plot(timeout,vy_ss,'g'),hold on,grid on
+    plot(timeout,-vy_VBOX,'r'),hold on,grid on %only use for 121
+    plot(timeout,vy,'b'),grid on
     ylabel('v_y [m/s]');
     xlabel('time [s]')
 
     subplot(3,1,3)
-    plot(timeout,psi_p*180/pi,timeout,psi_p_ss*180/pi,'b'),grid on
+    plot(timeout,yawRate_VBOX*180/pi,'r'),hold on,grid on %only use for 121
+    plot(timeout,psi_p*180/pi,'b'),grid on
     ylabel('\Psi\prime [deg/s]');
     xlabel('time [s]')
     

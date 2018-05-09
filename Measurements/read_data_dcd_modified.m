@@ -2,7 +2,7 @@ clear
 close all
 clc
 
-% Program for creating *.dcf-file for ADAMS
+% Program for creating *.dcd-file for ADAMS
 % Enter the filename of the measurement file that shall be loaded, insert the desired steering deviation (offset_error and scaling_error), perhaps 
 % adjust the time interval to be imported from the measurement file (hereafter referred to as file_data), save with an appropriate file name.
 % To run the file in ADAMS it has to be opened in e.g. notepad first. Once opened in notepad, take away the three top rows and save the file. 
@@ -11,16 +11,16 @@ clc
 % Edit by: Daniel 2012
 
 % desired steering deviation and calibration
-offset_error=0.1;    %OFFSET ERROR
-scaling_error=.9;    %SCALING ERROR
+offset_error=0.0225;    %OFFSET ERROR
+scaling_error=1;    %SCALING ERROR
 
-addpath('C:\AOB\Doc seri Andrea\KTH\KTH Courses\Ground Vehicle Dynamics\GVD-Project\Measurements')
+addpath('C:\Users\Teknolog_2\Desktop\Measurements')
 
 
-load LUNDA012.ASC
+load LUNDA121.ASC
 % Read-in of file
 
-% file_str = ['logged_data/MeasurementsLunda2016/VBOX0056.ASC']            % file name--------------CHANGE HERE
+% file_str = ['C:\Users\Teknolog_2\Desktop\Measurements/LUNDA121.ASC']            % file name--------------CHANGE HERE
 % 
 % fid = fopen(file_str);                      % open file
 % % for i=1:7
@@ -30,7 +30,7 @@ load LUNDA012.ASC
 % file_data = ans;
 % fclose(fid);                                % close file
 
-file_data=LUNDA012;
+file_data=LUNDA121;
 
 
 
@@ -44,7 +44,7 @@ UTdata(:,2)=scaling_error*(UTdata(:,2)-offset_error);
 
 
 apo=char(39);
-Str_1 = strvcat('[MDI_HEADER]','FILE_NAME     = LUNDA012.dcd');  % Change to appropriate file name
+Str_1 = strvcat('[MDI_HEADER]','FILE_NAME     = LUNDA121.dcd');  % Change to appropriate file name
 Str_2=strcat('FILE_TYPE     =',apo,('dcd'),apo);
 Str_3='FILE_VERSION  = 1.0';
 Str_4=strcat('FILE_FORMAT   = ', apo, 'ASCII', apo);
@@ -64,9 +64,20 @@ Str_16=strvcat(' ', '(DATA)', '{time steering throttle brake gear clutch}');
 datastr=num2str(UTdata);
 Utstr=strvcat(Str_1,Str_2,Str_3,Str_4,Str_5,Str_6,Str_7,Str_8,Str_9,Str_10,Str_11,Str_12,Str_13,Str_14,Str_15,Str_16,datastr);
 
+figure(3)
+hold on
+plot(file_data(:,1), 180/pi*(file_data(:,2)),'r')
+plot(UTdata(:,1),180/pi*UTdata(:,2),'bl-')
+title('Origial vs shifted')
+legend('Orignal','shifted')
+grid minor
+ylabel('SWA angle [degrees]')
+xlabel('Time [s]')
+text(1,100, 'scaling  1')
+text(1,60, 'offset 0.0225' )
 
 % Change to appropriate file name
-diary LUNDA012.dcd
+diary LUNDA121.dcd
 
 Utstr
 

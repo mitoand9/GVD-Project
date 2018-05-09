@@ -1,6 +1,6 @@
 $---------------------------------------------------------------------MDI_HEADER
 [MDI_HEADER]
- FILE_NAME     = sampled_steering.dcf
+ FILE_NAME     = LUNDA121.dcf
  FILE_TYPE     = 'dcf'
  FILE_VERSION  = 2.0
  FILE_FORMAT   = 'ASCII'
@@ -18,10 +18,10 @@ $---------------------------------------------------------------------EXPERIMENT
 [EXPERIMENT]
 EXPERIMENT_NAME = 'Sample Experiment: Data Driven Simulation'
 STATIC_SETUP    = 'SETTLE'
-INITIAL_SPEED   = 23
+INITIAL_SPEED   = 13.02
 (MINI_MANEUVERS)
 {mini_manuever     abort_time   step_size}
-'DATA_DRIVEN'       11.8         0.01
+'DATA_DRIVEN'       23.57         0.01
 $--------------------------------------------------------------------DATA_DRIVEN     
 [DATA_DRIVEN]
 (STEERING)
@@ -29,7 +29,7 @@ $--------------------------------------------------------------------DATA_DRIVEN
   METHOD         =  'OPEN'
   MODE           =  'ABSOLUTE'
   CONTROL_TYPE   =  'DATA_DRIVEN'
-  FILE     	 =  'mdids://gruppXX/driver_data.tbl/sampled_steering.dcd'
+  FILE     	 =  'mdids://group04/driver_data.tbl/LUNDA121.dcd'
 (THROTTLE)
   MODE           =  'ABSOLUTE'
   METHOD         =  'OPEN'

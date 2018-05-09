@@ -88,6 +88,10 @@ vx_VBOX = vbo.channels(1, 5).data(trim_start:trim_end,1)./3.6;
 ax_VBOX = vbo.channels(1, 9).data(trim_start:trim_end,1).*g;
 ay_VBOX = vbo.channels(1, 10).data(trim_start:trim_end,1).*g;
 SWA_VBOX=vbo.channels(1, 11).data(trim_start:trim_end,1).*(pi/180);
+roll_angle=vbo.channels(1, 34).data(trim_start:trim_end,1).*(pi/180);
+roll_rate=vbo.channels(1, 41).data(trim_start:trim_end,1).*(-pi/180);
+vy_VBOX=vbo.channels(1, 33).data(trim_start:trim_end,1).*(pi/180);
+
 
 % Taking away spikes in the data
 for i=1:length(Time)
@@ -96,6 +100,35 @@ for i=1:length(Time)
             SWA_VBOX(i,1)=SWA_VBOX(i-1);
         end
     end
+end
+i0 = 339;
+i1= 1625%length(Time)-1;
+
+yawgain=1;yawoffset=0;
+aygain=1; ayoffset=0;
+rollgain=1; rolloffset= 0.0039;
+
+Time = Time(i0:i1,1)-Time(i0,1);
+SWA_VBOX = SWA_VBOX(i0:i1,1);
+vx_VBOX = vx_VBOX(i0:i1,1);
+yawRate_VBOX = yawRate_VBOX(i0:i1,1)*yawgain+yawoffset;
+ay_VBOX = ay_VBOX(i0:i1,1)*aygain+ayoffset;
+roll_rate = roll_rate(i0:i1,1)*rollgain+rolloffset;
+ax_VBOX = ax_VBOX(i0:i1,1);
+vy_VBOX = vy_VBOX(i0:i1,1);
+
+x=zeros(1,length(Time));x(1)=0;
+y=zeros(1,length(Time));y(1)=0;
+roll_angle=zeros(1,length(Time));roll_angle(1)=0;
+yaw_angle=zeros(1,length(Time));yaw_angle(1)=0;
+
+for i=2:length(Time)
+dt=Time(i)-Time(i-1);
+roll_angle(i)=roll_angle(i-1)+roll_rate(i)*dt;
+yaw_angle(i)=yaw_angle(i-1)+yawRate_VBOX(i)*dt;
+vy_VBOX(i)=vy_VBOX(i-1)+(ay_VBOX(i)-yawRate_VBOX(i)*vx_VBOX(i))*dt;
+x(i)=x(i-1)+vy_VBOX(i)*sin(yaw_angle(i))*dt+vx_VBOX(i)*cos(yaw_angle(i))*dt;
+y(i)=y(i-1)+vy_VBOX(i)*cos(yaw_angle(i))*dt+vx_VBOX(i)*sin(yaw_angle(i))*dt;
 end
 
 subplot(3,2,1)
@@ -110,15 +143,34 @@ subplot(3,2,3)
 plot(Time,yawRate_VBOX)
 ylabel('yawrate')
 
-subplot(3,2,4)
-plot(Time,ax_VBOX)
-ylabel('ax')
+% subplot(3,2,4)
+% plot(Time,ax_VBOX)
+% ylabel('ax')
 
 subplot(3,2,5)
 plot(Time,ay_VBOX)
 ylabel('ay')
 
-data_storage= [Time SWA_VBOX];
+% 
+% figure(1)
+% plot(Time,roll_angle*180/pi)
+% grid on
+% ylabel('roll angle')
+% 
+% 
+% figure(2)
+% plot(Time,yawRate_VBOX*180/pi)
+% grid on
+% ylabel('yaw RATE')
+% 
+% figure(3)
+% plot(Time,-ay_VBOX./9.81)
+% grid on
+% ylabel('ay')
+
+
+
+data_storage=[Time SWA_VBOX];
 
 % Save to .mat-file
 save('LUNDA121.mat','Time', 'yawRate_VBOX', 'vx_VBOX', 'ax_VBOX', 'ay_VBOX', 'SWA_VBOX')
