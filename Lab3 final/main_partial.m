@@ -23,7 +23,7 @@ lambda=0.41;
 f=lambda*L;
 b=(1-lambda)*L;
 C12=100e3; %N/rad
-C34=120e3;
+C34=110e3;
 is=16.5;
 g = 9.81;
 cgh = 1.5; %cg height
@@ -69,6 +69,8 @@ delta=file_delta;
 time_delta=file_time;
 file_ay = file_data(:,7);
 file_SA34 = file_data(:,10);
+file_psidot = file_data(:,2);
+file_vx = file_data(:,9);
 
 % file_data = dlmread('LUNDA121.asc');
 % file_time=file_data(:,1);
@@ -183,26 +185,23 @@ if length(delta)~=1, figure
     vx=sqrt(velocity^2-vy.^2);
     i_end=find(time_delta>=timeout(end-1),1,'first');
     
+    figure()
     plot((file_SA34(1:i_end)-0.02)*180/pi,file_ay(1:i_end)*m*f/L,'o'),hold on, grid on %measured later force for ramp
     %plot(slip_VBOX*180/pi,ay_VBOX*m*f/L,'o'),hold on, grid on %measured later force for 121
-    plot(atan((vy(1:end-1)-psi_p(1:end-1)*b)./vx(1:end-1))*180/pi,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o'),grid on; %bicycle model lateral force with non-working slip angles
+    plot(atan((vy(1:end-1)-psi_p(1:end-1)*b)./vx(1:end-1))*180/pi,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o'),grid on; % bicycle model lateral force with non-working slip angles
     %plot(-(((vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L)/C34)*180/pi+1.1,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o','Linewidth',3),grid on; %C34 slip angles
-    ylabel('F34 [N]');
-    xlabel('SA34 [deg]')
+    ylabel('F34 (N)');
+    xlabel('SA (deg)')
     legend('Measurement','Model')
     hold on
     
-%     %plot( ... ,file_ay(1:i_end)*m*b/L,'o'),hold on, grid on
-%     plot(-(((vy_p+vx(1:end-1).*psi_p(1:end-1))*m*b/L)/C12)*180/pi,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*b/L,'o','Linewidth',3),grid on;
-%     ylabel('F12 [N]');
-%     xlabel('SA [deg]')
-%     legend('Measurement','Model')
-    
-    
-    %doubts:
-    % - what is the SA shift due to (wheel alignments)?
-    % - why is alpha34 calculated excessively small?
-    
+    figure()
+    plot(((file_SA34(1:i_end)-0.02)+(file_psidot(1:i_end)*L./file_vx(1:i_end))-file_delta(1:i_end))*180/pi , file_ay(1:i_end)*m*b/L,'o'),hold on, grid on
+    plot((atan((vy(1:end-1)+psi_p(1:end-1)*f)./vx(1:end-1))-file_delta(1:end-1))*180/pi , (vy_p+vx(1:end-1).*psi_p(1:end-1))*m*b/L,'o'),grid on;
+    ylabel('F12 (N)');
+    xlabel('SA (deg)')
+    legend('Measurement','Model')
+        
 end
 
 %% don't use this
