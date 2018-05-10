@@ -91,7 +91,7 @@ SWA_VBOX=vbo.channels(1, 11).data(trim_start:trim_end,1).*(pi/180);
 roll_angle=vbo.channels(1, 34).data(trim_start:trim_end,1).*(pi/180);
 roll_rate=vbo.channels(1, 41).data(trim_start:trim_end,1).*(-pi/180);
 vy_VBOX=vbo.channels(1, 33).data(trim_start:trim_end,1).*(pi/180);
-
+slip_VBOX=vbo.channels(1, 32).data(trim_start:trim_end,1).*(pi/180);
 
 % Taking away spikes in the data
 for i=1:length(Time)
@@ -116,6 +116,7 @@ ay_VBOX = ay_VBOX(i0:i1,1)*aygain+ayoffset;
 roll_rate = roll_rate(i0:i1,1)*rollgain+rolloffset;
 ax_VBOX = ax_VBOX(i0:i1,1);
 vy_VBOX = vy_VBOX(i0:i1,1);
+slip_VBOX = slip_VBOX(i0:i1,1);
 
 x=zeros(1,length(Time));x(1)=0;
 y=zeros(1,length(Time));y(1)=0;
