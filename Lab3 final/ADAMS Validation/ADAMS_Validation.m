@@ -4,6 +4,14 @@ ay_ADAMS = xlsread('ay.xls');
 ROLL_ADAMS = xlsread('roll.xls');
 yawrate_ADAMS = xlsread('yawrate.xls');
 
+ay_ADAMS_mod = xlsread('modified1_ay.xls');
+ROLL_ADAMS_mod = xlsread('modified1_roll.xls');
+yawrate_ADAMS_mod = xlsread('modified1_yawrate.xls');
+
+ay_ADAMS_mod2 = xlsread('modified2_ay.xls');
+ROLL_ADAMS_mod2 = xlsread('modified2_roll.xls');
+yawrate_ADAMS_mod2 = xlsread('modified2_yawrate.xls');
+
 load ay_VBOX_121
 load yawRate_VBOX_121
 load roll_VBOX_121
