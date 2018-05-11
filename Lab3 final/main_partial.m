@@ -22,8 +22,8 @@ L=2.55;
 lambda=0.41;
 f=lambda*L;
 b=(1-lambda)*L;
-C12=100e3; %N/rad
-C34=110e3;
+C12=65e3; %N/rad % Brush = 100e3, Linear = 65e3
+C34=90e3; % Brush = 110e3, Linear = 90e3
 is=16.5;
 g = 9.81;
 cgh = 1.5; %cg height
@@ -34,7 +34,7 @@ F2 = 1;
 F3 = 1;
 F4 = 1;
 
-tyre_model = "Brush"; %Select between Linear or Brush;
+tyre_model = "Linear"; %Select between Linear or Brush;
 
 % Intitial condition and time
 %-------------------------------------------------------
