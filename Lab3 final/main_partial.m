@@ -34,7 +34,7 @@ F2 = 1;
 F3 = 1;
 F4 = 1;
 
-tyre_model = "Linear"; % Select between Linear or Brush
+tyre_model = "Brush"; % Select between Linear or Brush
 
 % Intitial condition and time
 %-------------------------------------------------------
