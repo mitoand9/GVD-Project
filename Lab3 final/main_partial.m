@@ -12,11 +12,11 @@ load yawRate_VBOX_121
 load slip_VBOX_121
 load SWA_VBOX_121
 
-global m Jz L lambda f b C12 C34 is velocity delta file_time g tyre_model cgh F1 F2 F3 F4 tw %delta_t 
+global m Jz L lambda f b C12 C34 is velocity delta file_time g tyre_model cgh F1 F2 F3 F4 tw %delta_t
 
 % Vehicle parameters
 %------------------------------------------------------
-m=1435;
+m=1722;
 Jz=2380;
 L=2.55;
 lambda=0.41;
@@ -34,7 +34,7 @@ F2 = 1;
 F3 = 1;
 F4 = 1;
 
-tyre_model = "Linear"; % Select between Linear or Brush
+tyre_model = "Brush"; % Select between Linear or Brush
 
 % Intitial condition and time
 %-------------------------------------------------------
@@ -167,8 +167,8 @@ if length(delta)~=1, figure
 
     subplot(3,1,3)
     plot(timeout,yawRate_VBOX*180/pi,'m'),hold on,grid on % only use for 121
-    yawrate_Model_121 = yawRate_VBOX*180/pi;% only use for 121 - stores model ay values
     plot(timeout,psi_p*180/pi,'b'),grid on
+    yawrate_Model_121 = psi_p*180/pi; % only use for 121 - stores model ay values
     ylabel('\Psi\prime [deg/s]');
     xlabel('time [s]')
     

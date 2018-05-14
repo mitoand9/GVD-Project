@@ -60,10 +60,10 @@ mubrush = 1.3;
 deltaFf = m*(((F1 + F2)*cos((delta_t+SC1)*SC2)+(F3 + F4))/m)*b*cgh/(tw*L);
 deltaFr = m*(((F1 + F2)*cos((delta_t+SC1)*SC2)+(F3 + F4))/m)*f*cgh/(tw*L);
 
-Fz1 = m*g*(1-0.41)/2+deltaFf;
-Fz2 = m*g*(1-0.41)/2-deltaFf;
-Fz3 = m*g*0.41/2+deltaFr;
-Fz4 = m*g*0.41/2-deltaFr;
+Fz1 = m*g*(1-lambda)/2+deltaFf;
+Fz2 = m*g*(1-lambda)/2-deltaFf;
+Fz3 = m*g*lambda/2+deltaFr;
+Fz4 = m*g*lambda/2-deltaFr;
 
 if strcmp(tyre_model,'Brush') == 1
     lamb1 = Fz1*mubrush/(2*C12*abs(tan(alpha12))); %doesn't matter which cg has +/- deltaF, since in tcghe final formubrushla the forces on the same axle will be added
