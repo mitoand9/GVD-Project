@@ -22,8 +22,8 @@ L=2.55;
 lambda=0.41;
 f=lambda*L;
 b=(1-lambda)*L;
-C12=90e3; %N/rad % Brush = Linear = 65e3
-C34=100e3; % Brush = Linear = 90e3
+C12=65e3; %N/rad % Brush = Linear = 65e3
+C34=90e3; % Brush = Linear = 90e3
 is=16.5;
 g = 9.81;
 cgh = 0.2*L; %cg height
@@ -34,7 +34,7 @@ F2 = 1;
 F3 = 1;
 F4 = 1;
 
-tyre_model = "Brush"; % Select between Linear or Brush
+tyre_model = "Linear"; % Select between Linear or Brush
 
 % Intitial condition and time
 %-------------------------------------------------------
@@ -61,23 +61,23 @@ time=0:dt:tstop;    % time vector (fixed time step)
 % delta=file_delta;
 % time_delta=file_time;
 
-file_data=read_ascii('Testdata2011_Ramp.ASC');
-file_time=file_data(:,1);
-file_delta_sw=file_data(:,8);
-file_delta=file_delta_sw/is;
-delta=file_delta;
-time_delta=file_time;
-file_ay = file_data(:,7);
-file_SA34 = file_data(:,10);
-file_psidot = file_data(:,2);
-file_vx = file_data(:,9);
-
-% file_data = dlmread('LUNDA121.asc');
+% file_data=read_ascii('Testdata2011_Ramp.ASC');
 % file_time=file_data(:,1);
-% file_delta_sw=file_data(:,2);
+% file_delta_sw=file_data(:,8);
 % file_delta=file_delta_sw/is;
 % delta=file_delta;
 % time_delta=file_time;
+% file_ay = file_data(:,7);
+% file_SA34 = file_data(:,10);
+% file_psidot = file_data(:,2);
+% file_vx = file_data(:,9);
+
+file_data = dlmread('LUNDA121.asc');
+file_time=file_data(:,1);
+file_delta_sw=file_data(:,2);
+file_delta=file_delta_sw/is;
+delta=file_delta;
+time_delta=file_time;
 
 % Solve equations of motion
 %------------------------------------------------------
@@ -147,11 +147,12 @@ if length(delta)~=1, figure
     %plot(timeout,vx.*psi_p,'b');
     vx=sqrt(velocity^2-vy.^2);
     i_end=find(time_delta>=timeout(end-1),1,'first');
-    %plot(timeout,ay_VBOX,'m'),hold on,grid on %only use for 121
+    plot(timeout,ay_VBOX,'m'),hold on,grid on %only use for 121
     %plot(time_delta(1:i_end),delta(1:i_end)*180/pi,'g'),hold on,grid on 
     %plot(timeout,file_data(:,7),'r'),hold on,grid on % only use for DLC
     plot(timeout(1:end-1),vy_p+vx(1:end-1).*psi_p(1:end-1),'b'),hold on,grid on % plot model-based ay
-    plot(time_delta(1:i_end),file_ay(1:i_end)),grid on; % VBOX data - ramp steer
+    ay_Model_121 = vy_p+vx(1:end-1).*psi_p(1:end-1); % only use for 121 - stores model ay values
+    %plot(time_delta(1:i_end),file_ay(1:i_end)),grid on; % VBOX data - ramp steer
     title('Simulation from sampled steering wheel angle')
     ylabel('ay [m/s^2]');
     xlabel('time [s]')
@@ -159,13 +160,14 @@ if length(delta)~=1, figure
 
     subplot(3,1,2)
     % plot(timeout,vy_ss,'g'),hold on,grid on % steady-state vy
-    %plot(timeout,-vy_VBOX,'m'),hold on,grid on %only use for 121
+    plot(timeout,-vy_VBOX,'m'),hold on,grid on %only use for 121
     plot(timeout,vy,'b'),grid on
     ylabel('v_y [m/s]');
     xlabel('time [s]')
 
     subplot(3,1,3)
-    %plot(timeout,yawRate_VBOX*180/pi,'m'),hold on,grid on %only use for 121
+    plot(timeout,yawRate_VBOX*180/pi,'m'),hold on,grid on % only use for 121
+    yawrate_Model_121 = yawRate_VBOX*180/pi;% only use for 121 - stores model ay values
     plot(timeout,psi_p*180/pi,'b'),grid on
     ylabel('\Psi\prime [deg/s]');
     xlabel('time [s]')
@@ -181,28 +183,28 @@ end
 %% F vs SA plots - only use with ramp steer
 
 
-if length(delta)~=1, figure
-    vx=sqrt(velocity^2-vy.^2);
-    i_end=find(time_delta>=timeout(end-1),1,'first');
-    
-    figure()
-    plot((file_SA34(1:i_end)-0.02)*180/pi,file_ay(1:i_end)*m*f/L,'o'),hold on, grid on %measured later force for ramp
-    %plot(slip_VBOX*180/pi,ay_VBOX*m*f/L,'o'),hold on, grid on %measured later force for 121
-    plot(atan((vy(1:end-1)-psi_p(1:end-1)*b)./vx(1:end-1))*180/pi,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o'),grid on; % bicycle model lateral force with non-working slip angles
-    %plot(-(((vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L)/C34)*180/pi+1.1,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o','Linewidth',3),grid on; %C34 slip angles
-    ylabel('F34 (N)');
-    xlabel('SA (deg)')
-    legend('Measurement','Model')
-    hold on
-    
-    figure()
-    plot(((file_SA34(1:i_end)-0.02)+(file_psidot(1:i_end)*L./file_vx(1:i_end))-file_delta(1:i_end))*180/pi , file_ay(1:i_end)*m*b/L,'o'),hold on, grid on
-    plot((atan((vy(1:end-1)+psi_p(1:end-1)*f)./vx(1:end-1))-file_delta(1:end-1))*180/pi , (vy_p+vx(1:end-1).*psi_p(1:end-1))*m*b/L,'o'),grid on;
-    ylabel('F12 (N)');
-    xlabel('SA (deg)')
-    legend('Measurement','Model')
-        
-end
+% if length(delta)~=1, figure
+%     vx=sqrt(velocity^2-vy.^2);
+%     i_end=find(time_delta>=timeout(end-1),1,'first');
+%     
+%     figure()
+%     plot((file_SA34(1:i_end)-0.02)*180/pi,file_ay(1:i_end)*m*f/L,'o'),hold on, grid on %measured later force for ramp
+%     %plot(slip_VBOX*180/pi,ay_VBOX*m*f/L,'o'),hold on, grid on %measured later force for 121
+%     plot(atan((vy(1:end-1)-psi_p(1:end-1)*b)./vx(1:end-1))*180/pi,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o'),grid on; % bicycle model lateral force with non-working slip angles
+%     %plot(-(((vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L)/C34)*180/pi+1.1,(vy_p+vx(1:end-1).*psi_p(1:end-1))*m*f/L,'o','Linewidth',3),grid on; %C34 slip angles
+%     ylabel('F34 (N)');
+%     xlabel('SA (deg)')
+%     legend('Measurement','Model')
+%     hold on
+%     
+%     figure()
+%     plot(((file_SA34(1:i_end)-0.02)+(file_psidot(1:i_end)*L./file_vx(1:i_end))-file_delta(1:i_end))*180/pi , file_ay(1:i_end)*m*b/L,'o'),hold on, grid on
+%     plot((atan((vy(1:end-1)+psi_p(1:end-1)*f)./vx(1:end-1))-file_delta(1:end-1))*180/pi , (vy_p+vx(1:end-1).*psi_p(1:end-1))*m*b/L,'o'),grid on;
+%     ylabel('F12 (N)');
+%     xlabel('SA (deg)')
+%     legend('Measurement','Model')
+%         
+% end
 
 %% don't use this
 
