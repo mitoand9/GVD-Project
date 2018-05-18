@@ -1,8 +1,12 @@
 clear all
 
-ay_ADAMS = xlsread('ay.xls');
-ROLL_ADAMS = xlsread('roll.xls');
-yawrate_ADAMS = xlsread('yawrate.xls');
+% ay_ADAMS = xlsread('ay.xls');
+% ROLL_ADAMS = xlsread('roll.xls');
+% yawrate_ADAMS = xlsread('yawrate.xls');
+
+ay_ADAMS = importdata('tuned-ay.tab');
+ROLL_ADAMS = importdata('tuned-roll.tab');
+yawrate_ADAMS = importdata('tuned-yaw.tab');
 
 load ay_Linear_Validated
 load yawrate_Linear_Validated
