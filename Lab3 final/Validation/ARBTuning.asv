@@ -1,0 +1,5 @@
+clear all
+
+ay_ADAMS = xlsread('ay.xls');
+ROLL_ADAMS = xlsread('roll.xls');
+yawrate_ADAMS = xlsread('yawrate.xls');
