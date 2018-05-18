@@ -41,7 +41,7 @@ plot(ROLL_ADAMS.data(1:length(Time),1),ROLL_ADAMS.data(1:length(Time),2)*pi/180,
 hold on
 plot(ROLL_ADAMS_2.data(1:length(Time),1),ROLL_ADAMS_2.data(1:length(Time),2)*pi/180,'g')
 hold on
-plot(Time,roll_angle(1,:),'m')
+plot(Time,roll_angle(1,:)*0.8,'m')
 grid on
 xlabel('Time (s)')
 ylabel('\Phi (rad)')

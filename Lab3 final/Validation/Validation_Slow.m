@@ -21,7 +21,7 @@ load roll_VBOX_121
 load Time_VBOX_121
 
 figure(1)
-plot(ay_ADAMS(1:length(Time),1),-ay_ADAMS(1:length(Time),2)*9.81,'k')
+plot(ay_ADAMS.data(1:length(Time),1),-ay_ADAMS.data(1:length(Time),2)*9.81,'k')
 hold on
 plot(Time_Linear(1:length(ay_Linear_Validated)),ay_Linear_Validated,'b')
 hold on
@@ -31,9 +31,10 @@ plot(Time,ay_VBOX(:,1),'m')
 grid on
 xlabel('Time (s)')
 ylabel('a_y (m/s^2)')
+legend('ADAMS','Linear','Brush','VBOX')
 
 figure(2)
-plot(yawrate_ADAMS(1:length(Time),1),yawrate_ADAMS(1:length(Time),2)*pi/180,'k')
+plot(yawrate_ADAMS.data(1:length(Time),1),yawrate_ADAMS.data(1:length(Time),2)*pi/180,'k')
 hold on
 plot(Time_Linear(1:length(yawrate_Linear_Validated)),yawrate_Linear_Validated*pi/180,'b')
 hold on
@@ -43,11 +44,13 @@ plot(Time,yawRate_VBOX(:,1),'m')
 grid on
 xlabel('Time (s)')
 ylabel('\Psi (rad/s)')
+legend('ADAMS','Linear','Brush','VBOX')
 
 figure(3)
-plot(ROLL_ADAMS(1:length(Time),1),ROLL_ADAMS(1:length(Time),2)*pi/180,'k')
+plot(ROLL_ADAMS.data(1:length(Time),1),ROLL_ADAMS.data(1:length(Time),2)*pi/180,'k')
 hold on
 plot(Time,roll_angle(1,:),'m')
 grid on
 xlabel('Time (s)')
 ylabel('\Phi (rad)')
+legend('ADAMS','VBOX')

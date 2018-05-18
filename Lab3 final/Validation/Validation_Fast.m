@@ -1,8 +1,12 @@
 clear all
 
-ay_ADAMS = importdata('ay_fast.tab');
-ROLL_ADAMS = importdata('roll_fast.tab');
-yawrate_ADAMS = importdata('yawrate_fast.tab');
+% ay_ADAMS = importdata('ay_fast.tab');
+% ROLL_ADAMS = importdata('roll_fast.tab');
+% yawrate_ADAMS = importdata('yawrate_fast.tab');
+
+ay_ADAMS = importdata('lunda131-ay.tab');
+ROLL_ADAMS = importdata('lunda131-roll.tab');
+yawrate_ADAMS = importdata('lunda131-yaw.tab');
 
 load ay_Linear_Validated_Fast
 load yawrate_Linear_Validated_Fast
@@ -45,7 +49,7 @@ legend('ADAMS','Linear','Brush','VBOX')
 figure(3)
 plot(ROLL_ADAMS.data(1:length(Time)-2,1)+Time(1,1),ROLL_ADAMS.data(1:length(Time)-2,2)*pi/180,'k')
 hold on
-plot(Time,roll_angle(:,1),'m')
+plot(Time,roll_angle(:,1)*0.8,'m')
 grid on
 xlabel('Time (s)')
 ylabel('\Phi (rad)')
