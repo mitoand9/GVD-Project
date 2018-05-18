@@ -12,11 +12,17 @@ clc
 % load slip_VBOX_121
 % load SWA_VBOX_121
 
-load ay_VBOX_131
-load vy_VBOX_131
-load yawRate_VBOX_131
-load slip_VBOX_131
-load SWA_VBOX_131
+% load ay_VBOX_131
+% load vy_VBOX_131
+% load yawRate_VBOX_131
+% load slip_VBOX_131
+% load SWA_VBOX_131
+
+load ay_VBOX_DLC011
+load vy_VBOX_DLC011
+load yawRate_VBOX_DLC011
+load slip_VBOX_DLC011
+load SWA_VBOX_DLC011
 
 global m Jz L lambda f b C12 C34 is velocity delta file_time g tyre_model cgh F1 F2 F3 F4 tw %delta_t
 
@@ -44,7 +50,7 @@ tyre_model = "Brush"; % Select between Linear or Brush
 
 % Intitial condition and time
 %-------------------------------------------------------
-velocity=16;          % speed [m/s]
+velocity=25;          % speed [m/s]
 tstop=10 ;           % stop-time
 dt=0.02;            % timestep
 time=0:dt:tstop;    % time vector (fixed time step)
@@ -78,7 +84,14 @@ time=0:dt:tstop;    % time vector (fixed time step)
 % file_psidot = file_data(:,2);
 % file_vx = file_data(:,9);
 
-file_data = dlmread('LUNDA131.asc'); % change between LUNDA121.asc (13 m/s slalom) and LUNDA131.asc (16 m/s slalom)
+% file_data = dlmread('LUNDA131.asc'); % change between LUNDA121.asc (13 m/s slalom) and LUNDA131.asc (16 m/s slalom)
+% file_time=file_data(:,1);
+% file_delta_sw=file_data(:,2);
+% file_delta=file_delta_sw/is;
+% delta=file_delta;
+% time_delta=file_time;
+
+file_data = dlmread('LUNDA011.asc');
 file_time=file_data(:,1);
 file_delta_sw=file_data(:,2);
 file_delta=file_delta_sw/is;
@@ -158,7 +171,8 @@ if length(delta)~=1, figure
     %plot(timeout,file_data(:,7),'r'),hold on,grid on % only use for DLC
     plot(timeout(1:end-1),vy_p+vx(1:end-1).*psi_p(1:end-1),'b'),hold on,grid on % plot model-based ay
     %ay_Model_121 = vy_p+vx(1:end-1).*psi_p(1:end-1); % only use for 121 - stores model ay values
-    ay_Model_131 = vy_p+vx(1:end-1).*psi_p(1:end-1); % only use for 131 - stores model ay values
+    %ay_Model_131 = vy_p+vx(1:end-1).*psi_p(1:end-1); % only use for 131 - stores model ay values
+    ay_Model_011 = vy_p+vx(1:end-1).*psi_p(1:end-1); % only use for 011 - stores model ay values
     %plot(time_delta(1:i_end),file_ay(1:i_end)),grid on; % VBOX data - ramp steer
     title('Simulation from sampled steering wheel angle')
     ylabel('ay [m/s^2]');
@@ -176,7 +190,8 @@ if length(delta)~=1, figure
     plot(timeout,yawRate_VBOX*180/pi,'m'),hold on,grid on % only use for 121
     plot(timeout,psi_p*180/pi,'b'),grid on
     %yawrate_Model_121 = psi_p*180/pi; % only use for 121 - stores model ay values
-    yawrate_Model_131 = psi_p*180/pi; % only use for 131 - stores model ay values
+    %yawrate_Model_131 = psi_p*180/pi; % only use for 131 - stores model ay values
+    yawrate_Model_011 = psi_p*180/pi; % only use for 011 - stores model ay values
     ylabel('\Psi\prime [deg/s]');
     xlabel('time [s]')
     
