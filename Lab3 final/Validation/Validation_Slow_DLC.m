@@ -1,7 +1,7 @@
 clear all
 
 ay_ADAMS = importdata('DLC008_ay.tab');
-yawrate_ADAMS = importdata('DLC008_yaw.tab');
+yawrate_ADAMS = importdata('DLC008_yawrate.tab');
 
 load ay_Linear_Validated_DLC008
 load yawrate_Linear_Validated_DLC008
@@ -30,9 +30,9 @@ legend('ADAMS','Linear','Brush','VBOX')
 figure(2)
 plot(yawrate_ADAMS.data(1:length(Time),1),yawrate_ADAMS.data(1:length(Time),2)*pi/180,'k')
 hold on
-plot(Time_Linear_DLC008(1:length(yawrate_Linear_Validated_DLC008)),yawrate_Linear_Validated_DLC008*pi/180,'b')
+plot(Time_Linear_DLC008(1:length(Time)),yawrate_Linear_Validated_DLC008(1:length(Time))*pi/180,'b')
 hold on
-plot(Time_Brush_DLC008(1:length(yawrate_Brush_Validated_DLC008)),yawrate_Brush_Validated_DLC008*pi/180,'g')
+plot(Time_Brush_DLC008(1:length(Time)),yawrate_Brush_Validated_DLC008(1:length(Time))*pi/180,'g')
 hold on
 plot(Time,yawRate_VBOX(:,1),'m')
 grid on
