@@ -17,7 +17,7 @@ global vbox_file_name
 %----------------------------
 
 %vbox_file_name='logged_data/MeasurementsLunda2017/DLC__094.VBO'; 
-vbox_file_name='LUNDA011.VBO'; 
+vbox_file_name='LUNDA008.VBO'; 
 
 vboload
 
@@ -101,8 +101,8 @@ for i=1:length(Time)
         end
     end
 end
-i0 = 100;
-i1 = 670; %length(Time)-1;
+i0 = 400;
+i1 = 1900; %length(Time)-1;
 
 yawgain=1;yawoffset=0;
 aygain=1; ayoffset=0;
@@ -174,7 +174,7 @@ ylabel('ay')
 data_storage=[Time SWA_VBOX];
 
 % Save to .mat-file
-save('LUNDA011.mat','Time', 'yawRate_VBOX', 'vx_VBOX', 'ax_VBOX', 'ay_VBOX', 'SWA_VBOX')
+save('LUNDA008.mat','Time', 'yawRate_VBOX', 'vx_VBOX', 'ax_VBOX', 'ay_VBOX', 'SWA_VBOX')
 
 % Save as ascii-file
-dlmwrite('LUNDA011.asc',data_storage,'delimiter','\t')
+dlmwrite('LUNDA008.asc',data_storage,'delimiter','\t')
