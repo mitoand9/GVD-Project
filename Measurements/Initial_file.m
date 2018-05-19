@@ -101,8 +101,8 @@ for i=1:length(Time)
         end
     end
 end
-i0 = 400;
-i1 = 1900; %length(Time)-1;
+i0 = 322;
+i1 = 2121; %length(Time)-1;
 
 yawgain=1;yawoffset=0;
 aygain=1; ayoffset=0;
